@@ -27,3 +27,5 @@ aoc24-*.tar
 
 # Elixir LS working directory
 /.elixir_ls/
+
+.env

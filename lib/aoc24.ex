@@ -1,18 +1,9 @@
-defmodule Aoc24 do
-  @moduledoc """
-  Documentation for `Aoc24`.
-  """
-
-  @doc """
-  Hello world.
-
-  ## Examples
-
-      iex> Aoc24.hello()
-      :world
-
-  """
-  def hello do
-    :worldd
+defmodule Aoc.Main do
+  def main(args) do
+    case args do
+      [] -> IO.puts("No year and day given")
+      [year, day] -> Aoc.Runner.run(year, day)
+      [year, day, part] -> Aoc.Runner.run(year, day, part)
+    end
   end
 end
