@@ -1,9 +1,9 @@
-defmodule Aoc24.MixProject do
+defmodule Aoc.MixProject do
   use Mix.Project
 
   def project do
     [
-      app: :aoc24,
+      app: :aoc,
       version: "0.1.0",
       elixir: "~> 1.17",
       start_permanent: Mix.env() == :prod,
@@ -14,13 +14,17 @@ defmodule Aoc24.MixProject do
   # Run "mix help compile.app" to learn about applications.
   def application do
     [
-      extra_applications: [:logger]
+      extra_applications: [:logger],
+
     ]
   end
 
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
+      {:req, "~> 0.5.7"},
+      {:dotenv, "~> 3.1.0", only: [:dev, :test]},
+      {:benchee, "~> 1.3.1", only: :dev}
       # {:dep_from_hexpm, "~> 0.3.0"},
       # {:dep_from_git, git: "https://github.com/elixir-lang/my_dep.git", tag: "0.1.0"}
     ]
