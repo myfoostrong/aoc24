@@ -4,20 +4,33 @@ defmodule Aoc.Y2023.D1 do
   import Aoc.Util
 
   def part1(input) do
-    lines = helper(input)
-    answer = lines
+    helper(input)
     |> Enum.reduce(0, fn line, acc ->
         chars = String.graphemes(line)
-        first = elem(Integer.parse(Enum.find(chars, fn x -> is_int?(x) end)), 0)
-        last = elem(Integer.parse(Enum.find(Enum.reverse(chars), fn x -> is_int?(x) end)), 0)
+        first = get_digit(chars)
+        last = get_digit(Enum.reverse(chars))
         acc + 10 * first + last
       end)
-    IO.puts(answer)
-    :ok
+  end
+
+  defp get_digit(chars) do
+    elem(Integer.parse(
+      Enum.find(chars,
+      fn x -> is_int?(x) end)), 0)
   end
 
   def part2(input) do
-    :ok
+    helper(input)
+    |> Enum.reduce(0, fn line, acc ->
+      chars = String.graphemes(line)
+      first = get_digit2(chars)
+      last = get_digit2(Enum.reverse(chars))
+      acc + 10 * first + last
+    end)
+  end
+
+  defp get_digit2(chars) do
+    elem(chars, 0)
   end
 
   def helper(input) do
