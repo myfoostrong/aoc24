@@ -4,24 +4,40 @@ defmodule Aoc.Y2024.D1 do
   import Aoc.Util
 
   def part1(input) do
-    x = helper(input)
+    helper(input)
     |> Enum.reduce([[], []], fn line, acc ->
-      for {str, list} <- Enum.zip(String.split(line, "   "), acc) do
-        insort(list, elem(Integer.parse(str), 0))
+      for {coord, list} <- Enum.zip(parse_coords(line), acc) do
+        Enum.sort([coord | list])
       end
     end)
-    Enum.zip(x)
+    |> Enum.zip()
     |> Enum.reduce(0, fn {left, right}, acc ->
       abs(left - right) + acc
     end)
   end
 
-  defp insort(list, input) do
-    Enum.sort([input | list])
+  defp parse_coords(line) do
+    Enum.map(String.split(line, "   "), fn str -> parse_int(str) end)
   end
 
   def part2(input) do
-    :ok
+    {final_list, final_counter} = helper(input)
+    |> Enum.reduce({[], %{}}, fn line, {list, counter} ->
+      [left, right] = parse_coords(line)
+      {
+        [left | list],
+        case Map.get(counter, right) do
+          nil   -> Map.put(counter, right, 1)
+          count -> Map.put(counter, right, count + 1)
+        end
+      }
+    end)
+    Enum.reduce(final_list, 0, fn coord, acc ->
+      case Map.get(final_counter, coord) do
+        nil   -> 0 + acc
+        count -> count * coord + acc
+      end
+    end)
   end
 
   def helper(input) do

@@ -14,4 +14,8 @@ defmodule Aoc.Util do
     default = [charlists: :as_lists]
     dbg(data, Keyword.merge(default, opts))
   end
+
+  def parse_int(str) do
+    elem(Integer.parse(str), 0)
+  end
 end
