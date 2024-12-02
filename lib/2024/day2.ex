@@ -46,15 +46,22 @@ defmodule Aoc.Y2024.D2 do
   defp is_safe2?([a | [b | rest] ], prev_diff, prev_diff2, modified) do
     {safe, diff} = safe_diff?(a, b, prev_diff)
     prev_number = a - prev_diff
-    [ c | _ ] = rest
     cond do
+      # Safe, continue
       safe -> is_safe2?([b | rest], diff, prev_diff, modified)
+      # Previously modified, bail
       modified -> false
+      # Violation at tail, drop it
       length(rest) == 0 -> true
-      is_safe2?([a , c], prev_diff, prev_diff2, true) -> is_safe2?([a , rest], prev_diff, prev_diff2, true)
+      # Is removing the next item safe? Drop it and continue
+      elem(safe_diff?(a, hd(rest), prev_diff), 0) -> is_safe2?([a | rest], prev_diff, prev_diff2, true)
+      # Drop head of list and start over
       prev_diff == 0 -> is_safe2?([b | rest], 0, 0, true)
+      # Violation in 2nd/3rd item, direction could change
       prev_diff2 == 0 ->
+        # Drop head of list and start over
         unless is_safe2?([a, b] ++ rest, 0, 0, true) do
+          # Drop 2nd item
           is_safe2?([prev_number, b] ++ rest, 0, 0, true)
         else
           true
