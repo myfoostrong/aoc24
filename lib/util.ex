@@ -10,6 +10,7 @@ defmodule Aoc.Util do
     end)
   end
 
+  @spec d(any(), keyword()) :: any()
   def d(data, opts \\ []) do
     default = [charlists: :as_lists]
     dbg(data, Keyword.merge(default, opts))
@@ -17,5 +18,16 @@ defmodule Aoc.Util do
 
   def parse_int(str) do
     elem(Integer.parse(str), 0)
+  end
+
+  def write_logfile(path, str) do
+    {:ok, file} = File.open(path, [:append])
+    IO.binwrite(file, str <> "\n")
+    File.close(file)
+  end
+
+  def clear_logfile(path) do
+    {:ok, file} = File.open(path, [:write])
+    File.close(file)
   end
 end
