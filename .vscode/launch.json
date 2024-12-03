@@ -8,7 +8,7 @@
             "type": "mix_task",
             "name": "mix run",
             "request": "launch",
-            "taskArgs": ["run","-e","Aoc.Runner.run 2024,2"],
+            "taskArgs": ["execute","2024", "3"],
             "projectDir": "${workspaceRoot}"
         },
         {

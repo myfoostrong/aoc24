@@ -11,13 +11,9 @@ defmodule Aoc.Runner do
 
     quote do
       def run() do
-        [1, 2]
-        |> Enum.each(fn part ->
-          case unquote(opts[:inspect]) do
-            true -> run(part) |> IO.inspect(label: "Part #{part}")
-            false -> run(part)
-          end
-        end)
+        input = get_input()
+        part1(input) |> IO.inspect(label: "Part 1")
+        part2(input) |> IO.inspect(label: "Part 2")
 
         :ok
       end

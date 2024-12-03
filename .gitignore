@@ -29,3 +29,6 @@ aoc24-*.tar
 /.elixir_ls/
 
 .env
+.vscode/launch.json
+debug.log
+test.txt
