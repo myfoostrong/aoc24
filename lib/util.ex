@@ -17,7 +17,8 @@ defmodule Aoc.Util do
   end
 
   def parse_int(str) do
-    elem(Integer.parse(str), 0)
+    {integer, remainder} = Integer.parse(str)
+    integer
   end
 
   def write_logfile(path, str) do
