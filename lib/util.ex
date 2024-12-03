@@ -17,16 +17,19 @@ defmodule Aoc.Util do
   end
 
   def parse_int(str) do
-    elem(Integer.parse(str), 0)
+    {integer, remainder} = Integer.parse(str)
+    integer
   end
 
-  def write_logfile(path, str) do
+  def write_logfile(str) do
+    path = "./debug.log"
     {:ok, file} = File.open(path, [:append])
     IO.binwrite(file, str <> "\n")
     File.close(file)
   end
 
-  def clear_logfile(path) do
+  def clear_logfile() do
+    path = "./debug.log"
     {:ok, file} = File.open(path, [:write])
     File.close(file)
   end
