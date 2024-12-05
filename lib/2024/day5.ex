@@ -4,9 +4,17 @@ defmodule Aoc.Y2024.D5 do
   import Aoc.Util
 
   def part1(input) do
-    helper(input)
+    %{rules: rules, updates: updates} = helper(input)
     |> Enum.reduce(%{rules: [], updates: []}, &parse_row/2)
-    |> get_ordered_updates()
+
+    rulebook = build_rulebook(rules)
+    Enum.reduce(updates, 0, fn update, acc ->
+      if check_order(rulebook, update) do
+        acc + Enum.at(update, div(length(update),2), 0)
+      else
+        acc
+      end
+    end)
   end
 
   defp parse_row("", acc), do: acc
@@ -17,11 +25,6 @@ defmodule Aoc.Y2024.D5 do
     %{acc | updates: [Enum.map(String.split(row,","), &parse_int/1) | acc.updates]}
   end
 
-  defp get_ordered_updates(acc) do
-    build_rulebook(acc.rules)
-    |> check_update_list(acc.updates)
-  end
-
   defp build_rulebook(rules) do
     Enum.reduce(rules, %{}, fn rule, acc ->
       {lo, hi} = rule
@@ -29,17 +32,6 @@ defmodule Aoc.Y2024.D5 do
       hi_map = Map.get(acc, hi, %{down: [], up: []})
       acc = Map.put(acc, lo, %{lo_map | up: [hi | lo_map.up] })
       Map.put(acc, hi, %{hi_map | down: [ lo | hi_map.down]})
-    end)
-  end
-
-  defp check_update_list(rulebook, updates) do
-    Enum.reduce(updates, 0, fn update, acc ->
-      if check_order(rulebook, update) do
-        mid = Enum.at(update, div(length(update),2), 0)
-        mid + acc
-      else
-        acc
-      end
     end)
   end
 
@@ -60,17 +52,9 @@ defmodule Aoc.Y2024.D5 do
 
 
   def part2(input) do
-    helper(input)
+    %{rules: rules, updates: updates} = helper(input)
     |> Enum.reduce(%{rules: [], updates: []}, &parse_row/2)
-    |> fix_updates()
-  end
-
-  defp fix_updates(acc) do
-    build_rulebook(acc.rules)
-    |> fix_update_list(acc.updates)
-  end
-
-  defp fix_update_list(rulebook, updates) do
+    rulebook = build_rulebook(rules)
     Enum.reduce(updates, 0, fn update, acc ->
       unless check_order(rulebook, update) do
         ordered_update = sort_update(rulebook, update)
@@ -91,20 +75,6 @@ defmodule Aoc.Y2024.D5 do
       y_in_x_up or x_in_y_down
     end)
   end
-
-  # defp check_order(rulebook, updates), do: check_order(rulebook, Enum.with_index(updates), [])
-  # defp check_order(_, [], _), do: true
-  # defp check_order(rulebook, [a | rest], seen) do
-  #   {a, _} = a
-  #   in_order = Map.get(Map.get(rulebook, a, %{up: []}), :up, [])
-  #   |> Enum.all?(fn x -> x not in seen end)
-
-  #   if in_order do
-  #     check_order(rulebook, rest, [a | seen])
-  #   else
-  #     nil
-  #   end
-  # end
 
   def helper(input) do
     input |> parse_lines()
