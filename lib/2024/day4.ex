@@ -120,34 +120,35 @@ defmodule Aoc.Y2024.D4 do
     search_xmas2(grid, rest, arr + check_xmas2(grid, coord))
   end
 
-  defp check_xmas2(grid, coord), do: check_xmas2(grid, coord, get_cell(grid, coord))
-
-  defp check_xmas2(grid, {i, j}, "A") do
-    Enum.reduce(
-      [:up, :down, :left, :right, :up_left, :up_right, :down_left, :down_right],
-      0,
-      fn direction, acc ->
-        xmas = check_xmas2(grid, {i, j}, "S", direction)
+  defp check_xmas2(grid, {i, j}) do
+    Enum.map(
+      [:up_left, :down_right, :down_left, :up_right],
+      fn direction ->
+        n = get_neighbor(grid, {i, j}, direction)
         # if xmas == 1 do
-        write_logfile("#{i},#{j} #{direction} #{xmas}")
+        write_logfile("#{i},#{j} #{direction} #{n}")
         # end
-        acc + xmas
+        n
       end
     )
+    |> is_x()
   end
-  defp check_xmas2(_, _, _), do: 0
 
-  defp check_xmas2(_, _, "$", _), do: 1
-  defp check_xmas2(grid, {i, j}, c, direction) when c in ["A","S"] do
-    {dx, dy} = get_delta(direction)
-    next_coord = {i + dx, j + dy}
-    unless get_cell(grid, next_coord) == c do
-      0
+  defp is_x([ul, dl, ur, dr]) do
+    if is_x([ul, dl]) && is_x([ur, dr]) do
+      1
     else
-      check_xmas2(grid, next_coord, get_next_char(c), direction)
+      0
     end
   end
-  defp check_xmas2(_, _, _, _), do: 0
+  defp is_x([u, d]), do: (u == "M" && d == "S") || (u == "S" && d == "M")
+  defp is_x(_), do: 0
+
+  defp get_neighbor(grid, {i, j}, direction) do
+    {dx, dy} = get_delta(direction)
+    next_coord = {i + dx, j + dy}
+    get_cell(grid, next_coord)
+  end
 
   def helper(input) do
     input |> parse_lines()
