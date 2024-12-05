@@ -4,9 +4,9 @@ defmodule Aoc.Y2024.D4 do
   import Aoc.Util
 
   def part1(input) do
-    # {grid, coords} = helper(input)
-    # |> build_grid()
-    # search_xmas(grid, coords)
+    {grid, coords} = helper(input)
+    |> build_grid()
+    search_xmas(grid, coords)
   end
 
   defp build_grid(input), do: build_grid(input, {}, [], 0)
