@@ -84,8 +84,8 @@ defmodule Aoc.Y2024.D2 do
     safe = cond do
       abs(diff) < 1 -> false
       abs(diff) > 3 -> false
-      diff > 0 && prev_diff < 0 -> false
-      diff < 0 && prev_diff > 0 -> false
+      diff > 0 and prev_diff < 0 -> false
+      diff < 0 and prev_diff > 0 -> false
       true -> true
     end
     {safe, diff}

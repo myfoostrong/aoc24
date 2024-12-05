@@ -4,9 +4,9 @@ defmodule Aoc.Y2024.D4 do
   import Aoc.Util
 
   def part1(input) do
-    # {grid, coords} = helper(input)
-    # |> build_grid()
-    # search_xmas(grid, coords)
+    {grid, coords} = helper(input)
+    |> build_grid()
+    search_xmas(grid, coords)
   end
 
   defp build_grid(input), do: build_grid(input, {}, [], 0)
@@ -135,13 +135,13 @@ defmodule Aoc.Y2024.D4 do
   end
 
   defp is_x([ul, dl, ur, dr]) do
-    if is_x([ul, dl]) && is_x([ur, dr]) do
+    if is_x([ul, dl]) and is_x([ur, dr]) do
       1
     else
       0
     end
   end
-  defp is_x([u, d]), do: (u == "M" && d == "S") || (u == "S" && d == "M")
+  defp is_x([u, d]), do: (u == "M" and d == "S") or (u == "S" and d == "M")
   defp is_x(_), do: 0
 
   defp get_neighbor(grid, {i, j}, direction) do
