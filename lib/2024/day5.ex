@@ -17,24 +17,6 @@ defmodule Aoc.Y2024.D5 do
     end)
   end
 
-  defp parse_row("", acc), do: acc
-  defp parse_row(<<head::binary-size(2), <<"|", tail::binary>> >>, acc) do
-    %{acc | rules: [{parse_int(head), parse_int(tail)} | acc.rules]}
-  end
-  defp parse_row(row, acc) do
-    %{acc | updates: [Enum.map(String.split(row,","), &parse_int/1) | acc.updates]}
-  end
-
-  defp build_rulebook(rules) do
-    Enum.reduce(rules, %{}, fn rule, acc ->
-      {lo, hi} = rule
-      lo_map = Map.get(acc, lo, %{down: [], up: [] })
-      hi_map = Map.get(acc, hi, %{down: [], up: []})
-      acc = Map.put(acc, lo, %{lo_map | up: [hi | lo_map.up] })
-      Map.put(acc, hi, %{hi_map | down: [ lo | hi_map.down]})
-    end)
-  end
-
   defp check_order(rulebook, updates), do: check_order(rulebook, Enum.with_index(updates), [])
   defp check_order(_, [], _), do: true
   defp check_order(rulebook, [a | rest], seen) do
@@ -78,5 +60,23 @@ defmodule Aoc.Y2024.D5 do
 
   def helper(input) do
     input |> parse_lines()
+  end
+
+  defp parse_row("", acc), do: acc
+  defp parse_row(<<head::binary-size(2), <<"|", tail::binary>> >>, acc) do
+    %{acc | rules: [{parse_int(head), parse_int(tail)} | acc.rules]}
+  end
+  defp parse_row(row, acc) do
+    %{acc | updates: [Enum.map(String.split(row,","), &parse_int/1) | acc.updates]}
+  end
+
+  defp build_rulebook(rules) do
+    Enum.reduce(rules, %{}, fn rule, acc ->
+      {lo, hi} = rule
+      lo_map = Map.get(acc, lo, %{down: [], up: [] })
+      hi_map = Map.get(acc, hi, %{down: [], up: []})
+      acc = Map.put(acc, lo, %{lo_map | up: [hi | lo_map.up] })
+      Map.put(acc, hi, %{hi_map | down: [ lo | hi_map.down]})
+    end)
   end
 end
