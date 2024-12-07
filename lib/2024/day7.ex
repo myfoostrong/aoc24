@@ -5,11 +5,13 @@ defmodule Aoc.Y2024.D7 do
 
   def part1(input) do
     runs = helper(input)
-    clear_addition(runs)
-    |> clear_multiplication()
-    |> validate_runs()
+    validate_runs({0,runs})
+    # clear_addition(runs)
+    # |> clear_multiplication()
+    # |> validate_runs()
   end
   # 882304363039 too high
+  # 882304362421
 
   defp clear_addition(runs), do: clear_addition(runs, {0, []})
   defp clear_addition([], acc), do: acc
@@ -55,7 +57,7 @@ defmodule Aoc.Y2024.D7 do
   defp validate_run({test, params}), do: validate_run(Enum.reverse(params), test, test)
   defp validate_run([], 0, _), do: true
   defp validate_run([], _, _), do: false
-  defp validate_run(_, remain, _) when remain < 0, do: false
+  defp validate_run(_, remain, _) when remain < 1, do: false
 
   defp validate_run([p | rest], remain, test) do
     acc = validate_run(rest, remain - p, test)
@@ -68,6 +70,21 @@ defmodule Aoc.Y2024.D7 do
 
   def part2(input) do
     :ok
+  end
+
+  defp validate_run2({test, params}), do: validate_run(Enum.reverse(params), test, test)
+  defp validate_run2([], 0, _), do: true
+  defp validate_run2([], _, _), do: false
+  defp validate_run2(_, remain, _) when remain < 1, do: false
+
+  defp validate_run2([p | rest], remain, test) do
+    acc = validate_run2(rest, remain - p, test)
+    acc = acc or validate_run2(rest, remain - p, test)
+    if rem(remain, p) == 0 do
+      acc or validate_run2(rest, div(remain, p), test)
+    else
+      acc
+    end
   end
 
   def helper(input) do
