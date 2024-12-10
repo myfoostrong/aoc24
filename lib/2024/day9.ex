@@ -4,19 +4,20 @@ defmodule Aoc.Y2024.D9 do
   import Aoc.Util
 
   def part1(input) do
-    disk = helper(input)
+    helper(input)
     |> Enum.with_index()
-    # |> Enum.reverse()
-    # |> then(fn [{[x],i}|rest] -> [{[x,0],i} | rest] end)
-    # |> Enum.reverse()
-    # |> fast_compact()
+    |> Enum.reverse()
+    |> then(fn [{[x],i}|rest] -> [{[x,0],i} | rest] end)
+    |> Enum.reverse()
+    |> fast_compact()
 
     # Too Slow
-    |> calc_blocks()
-    |> compact_fs()
+    # |> calc_blocks()
+    # |> compact_fs()
     # IO.puts(disk))
   end
   # 6484194307037 too high
+  # i = 49707 h_id = 5280 h_blocks = 3 h_free = 0
 
   # defp fast_compact(list), do: fast_compact(list, Enum.reverse(list))
   # defp fast_compact(disk, [{[x],i}| rest]), do: fast_compact(disk, [{[x,0],i}| rest], 0, 0)
