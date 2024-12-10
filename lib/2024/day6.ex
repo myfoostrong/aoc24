@@ -11,7 +11,7 @@ defmodule Aoc.Y2024.D6 do
 
   defp map_path(start, h_blocks, v_blocks, layout),
     do: map_path(start, h_blocks, v_blocks, layout, :up)
-  defp map_path({x,y}, _, _, layout, _) when x == 0 or y == 0 or x == 129 or y == 129, do: layout
+  defp map_path({x,y}, _, _, layout, _) when x == 0 or y == 0 or x == 130 or y == 130, do: layout
   defp map_path(start, h_blocks, v_blocks, layout, direction) do
     {x, y} = start
     hb = Map.get(h_blocks, y, [])
@@ -32,13 +32,13 @@ defmodule Aoc.Y2024.D6 do
 
   defp move_direction({x, y}, hb, vb, direction) do
     {case direction do
-      :right -> Enum.find(hb, 130, fn block -> block > x end) - 1
+      :right -> Enum.find(hb, 131, fn block -> block > x end) - 1
       :left -> (Enum.reverse(hb) |> Enum.find(-1, fn block -> block < x end)) + 1
       _ -> x
     end,
     case direction do
       :up -> (Enum.reverse(vb) |> Enum.find(-1, fn block -> block < y end)) + 1
-      :down -> (Enum.find(vb, 130, fn block -> block > y end)) - 1
+      :down -> (Enum.find(vb, 131, fn block -> block > y end)) - 1
       _ -> y
     end}
   end
